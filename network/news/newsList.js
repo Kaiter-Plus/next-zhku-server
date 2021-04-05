@@ -29,7 +29,7 @@ module.exports = url => {
           // 创建临时对象存储数据
           const temp = {}
           temp.href = a.attr('href')
-          temp.id = md5.update(temp.href).digest('hex')
+          temp.id = md5.update(temp.href + i).digest('hex')
           temp.title = a.text()
           temp.date = $(news[i]).find('span').text().trim()
           // 数据添加到 news 相关的标题中
