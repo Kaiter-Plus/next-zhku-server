@@ -19,12 +19,13 @@ function getSpecialTitle(url) {
         // 遍历添加数据
         for (let i = 0; i < 4; i += 1) {
           const a = $(titles[i]).find('a')
+          const href = a.attr('href')
           // 新建 md5 加密对象
           const md5 = crypto.createHash('md5')
           // 创建临时对象存储数据
           const temp = {}
-          temp.href = a.attr('href')
-          temp.id = md5.update(temp.href).digest('hex')
+          temp.href = href
+          temp.id = md5.update(href).digest('hex')
           temp.title = a.text()
           // 数据添加到 news 相关的标题中
           specialTitles.push(temp)
@@ -53,12 +54,18 @@ function getSpecialList(url) {
         for (let i = 0; i < 4; i += 1) {
           // 获取新闻链接
           const a = $(news[i]).find('a')
+          let href = a.attr('href')
+          if (href.indexOf('http') > -1) {
+            href = href.replace('https://news.zhku.edu.cn/', '')
+          } else {
+            href = href.replace(/\.\.\//g, '')
+          }
           // 新建 md5 加密对象
           const md5 = crypto.createHash('md5')
           // 创建临时对象存储数据
           const temp = {}
-          temp.href = a.attr('href')
-          temp.id = md5.update(temp.href).digest('hex')
+          temp.href = href
+          temp.id = md5.update(href).digest('hex')
           temp.title = a.text()
           temp.date = $(news[i]).find('span').text().trim()
           // 数据添加到 news 相关的标题中

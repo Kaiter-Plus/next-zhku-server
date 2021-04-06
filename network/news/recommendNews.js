@@ -17,7 +17,7 @@ module.exports = () => {
           const md5 = crypto.createHash('md5')
           const temp = {}
           temp.href = $(news[i]).attr('href').replace('http://news.zhku.edu.cn/', '')
-          temp.href = 'https://news.zhku.edu.cn/' + temp.href
+          // temp.href = 'https://news.zhku.edu.cn/' + temp.href
           temp.id = md5.update(temp.href).digest('hex')
           temp.title = $(news[i]).attr('title')
           temp.imgSrc = 'https://news.zhku.edu.cn' + img.attr('src')

@@ -18,6 +18,16 @@ var NewsRouter = require('./routes/news/newsList.js')
 // 创建实例
 var app = express()
 
+// 端口
+const port = 80
+
+app.use(logger('dev'))
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+app.use(cookieParser())
+// 设置静态文件目录，同时设置缓存事件为 2 小时
+app.use(express.static(path.join(__dirname, 'public'), { maxAge: 7200 * 1000 }))
+
 //跨域设置(所有域名)
 app.all('*', function (req, res, next) {
   //其中*表示允许所有域可跨
@@ -27,16 +37,6 @@ app.all('*', function (req, res, next) {
   res.header('Content-Type', 'application/json;charset=utf-8')
   next()
 })
-
-// 端口
-const port = 80
-
-app.use(logger('dev'))
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
-app.use(cookieParser())
-// 设置静态文件目录，同时设置缓存事件为 1 小时
-app.use(express.static(path.join(__dirname, 'public'), { maxAge: 7200 * 1000 }))
 
 // 首页路由导航
 app.use('/home', homeRouter)

@@ -18,7 +18,6 @@ router.get('/', function (req, res, next) {
 
 // 获取专题列表
 router.get('/:url', function (req, res, next) {
-  console.log(req.params.url)
   special
     .getSpecialList(req.params.url)
     .then(value => {
