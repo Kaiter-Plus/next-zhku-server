@@ -1,7 +1,7 @@
 var redis = require('redis'),
   RDS_PORT = 6379, // 端口号
-  RDS_HOST = '127.0.0.1', // 服务器IP  要连接的服务器redis
-  RDS_PWD = '123456', // 密码
+  RDS_HOST = '121.37.230.214', // 服务器IP  要连接的服务器redis
+  RDS_PWD = 'zheng1234', // 密码
   RDS_OPTS = {}, // 设置项
   client = redis.createClient(RDS_PORT, RDS_HOST, RDS_OPTS)
 
