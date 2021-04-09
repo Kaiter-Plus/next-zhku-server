@@ -12,7 +12,7 @@ router.get('/:url', function (req, res, next) {
       res.json(value)
     })
     .catch(reason => {
-      res.write(reason)
+      res.send(reason)
     })
 })
 

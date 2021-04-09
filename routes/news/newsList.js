@@ -13,7 +13,7 @@ router.get('/', function (req, res, next) {
       res.json(value)
     })
     .catch(reason => {
-      res.write(reason)
+      res.send(reason)
     })
 })
 
@@ -24,7 +24,7 @@ router.get('/:url', function (req, res, next) {
       res.json(value)
     })
     .catch(reason => {
-      res.write(reason)
+      res.send(reason)
     })
 })
 
@@ -35,7 +35,7 @@ router.get('/:type/:url', function (req, res, next) {
       res.json(value)
     })
     .catch(reason => {
-      res.write(reason)
+      res.send(reason)
     })
 })
 
@@ -46,7 +46,7 @@ router.get('/:info/:type/:no', function (req, res, next) {
       res.json(value)
     })
     .catch(reason => {
-      res.write(reason)
+      res.send(reason)
     })
 })
 

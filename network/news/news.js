@@ -5,14 +5,37 @@ const crypto = require('crypto')
 // 新闻路径
 const baseUrl = 'https://news.zhku.edu.cn'
 
-// 导出一个获取结果的一部函数
+// 导出一个获取结果的一个函数
 module.exports = params => {
+  // 拼接链接
+  const url = `${baseUrl}/${params.info}/${params.type}/${params.no}`
   // 新闻列表
   const news = {}
   return new Promise((resolve, reject) => {
-    request(`${baseUrl}/${params.info}/${params.type}/${params.no}`)
+    request({
+      url,
+      headers: {
+        Host: 'news.zhku.edu.cn',
+        Referer: 'https://news.zhku.edu.cn/',
+      },
+    })
       .then(res => {
         const $ = cheerio.load(res)
+        // 判断内容是否已经被注销
+        if (!$('body').children().get(0)) {
+          resolve({
+            title: '内容已经被注销，请切换其它新闻查看',
+            date: '',
+            author: '',
+            content: [
+              {
+                id: '1',
+                tag: 'p',
+                text: '该内容已经被注销了，请切换其它新闻查看',
+              },
+            ],
+          })
+        }
         // 获取主要容器
         const container = $('.leftcontent')
         // 获取标题
@@ -40,34 +63,48 @@ module.exports = params => {
         } else {
           content = content.children()
         }
-        // 遍历添加北荣
+        // 遍历添加内容
         Array.prototype.forEach.call(content, v => {
           const md5 = crypto.createHash('md5')
-          // 图片
-          if ($(v).attr('class') && $(v).attr('class').indexOf('img') > -1) {
+          if ($(v).attr('class') && $(v).attr('class').indexOf('img') > -1 && $(v).children().get(0)) {
+            // 图片
             let img
-            if ($(v).children().get(0) && $(v).children().get(0).tagName === 'img') {
+            if ($(v).children().eq(0).attr('src')) {
               img = $(v).children()
             } else {
               img = $(v).children().children()
             }
             news.content.push({
               id: md5.update(img.attr('src') + '1').digest('hex'),
-              tag: img.get(0).tagName.toLowerCase(),
+              tag: img[0].tagName.toLowerCase(),
               src: img.attr('src').indexOf('http') > -1 ? img.attr('src') : baseUrl + img.attr('src'),
             })
           } else if (v.tagName.toLowerCase() === 'table') {
+            // 表格
             news.content.push({
               id: md5.update($(v).text()).digest('hex'),
               tag: v.tagName.toLowerCase(),
               text: $(v).html(),
             })
           } else {
-            news.content.push({
-              id: md5.update($(v).text()).digest('hex'),
-              tag: $(v).get(0).tagName.toLowerCase(),
-              text: $(v).text(),
-            })
+            if ($(v).children().get(0) && $(v).children().get(0).tagName === 'img') {
+              // 没有设置类名的图片
+              news.content.push({
+                id: md5.update($(v).children().eq(0).attr('src') + '1').digest('hex'),
+                tag: $(v).children().get(0).tagName.toLowerCase(),
+                src:
+                  $(v).children().eq(0).attr('src').indexOf('http') > -1
+                    ? $(v).children().eq(0).attr('src')
+                    : baseUrl + $(v).children().eq(0).attr('src'),
+              })
+            } else {
+              // 其它
+              news.content.push({
+                id: md5.update($(v).text()).digest('hex'),
+                tag: $(v).get(0).tagName.toLowerCase(),
+                text: $(v).text(),
+              })
+            }
           }
         })
         // 获取最近更新

@@ -12,7 +12,7 @@ router.get('/school-introduce', function (req, res, next) {
       res.json(value)
     })
     .catch(reason => {
-      res.write(reason)
+      res.send(reason)
     })
 })
 
@@ -24,7 +24,7 @@ router.get('/incumbent', function (req, res, next) {
       res.json(value)
     })
     .catch(reason => {
-      res.write(reason)
+      res.send(reason)
     })
 })
 
@@ -36,7 +36,7 @@ router.get('/school-scenery', function (req, res, next) {
       res.json(value)
     })
     .catch(reason => {
-      res.write(reason)
+      res.send(reason)
     })
 })
 
