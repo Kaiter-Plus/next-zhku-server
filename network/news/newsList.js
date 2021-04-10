@@ -54,10 +54,10 @@ module.exports = params => {
               // 数据添加到 news 相关的标题中
               newsList.news.push(temp)
             }
-            if (typeof params === 'string') {
-              // 如果是第一次加载,则把数据存进 redis,有效期为 1 天
-              redis.set(url, newsList, 86400)
-            }
+
+            // 如果是第一次加载,则把数据存进 redis,有效期为 1 天
+            redis.set(url, newsList, 86400)
+
             resolve(newsList)
           })
           .catch(err => {
