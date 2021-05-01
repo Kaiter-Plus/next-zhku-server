@@ -56,12 +56,12 @@ public class CommonInterceptor implements AsyncHandlerInterceptor, InitializingB
                 verifier.verify(token);
             } catch (JWTVerificationException ex) {
                 // log.warn("验证失败", ex);
-                response.getWriter().write(AjaxResult.error("用户验证失败，请重新登录！").toString());
+                response.getWriter().write(AjaxResult.illegal("用户验证失败，请重新登录！").toString());
                 return false;
             }
             return true;
         }
-        response.getWriter().write(AjaxResult.error("用户验证失败，请重新登录！").toString());
+        response.getWriter().write(AjaxResult.expired("用户验证失败，请重新登录！").toString());
         return false;
     }
 

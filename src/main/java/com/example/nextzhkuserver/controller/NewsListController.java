@@ -113,7 +113,7 @@ public class NewsListController {
     // 获取首页展示的新闻标题、时间
     @GetMapping("/public/news")
     public AjaxResult getHomeNews(@RequestParam(required = false, defaultValue = "1") int page,
-                                  @RequestParam(required = false, defaultValue = "20") int limit,
+                                  @RequestParam(required = false, defaultValue = "10") int limit,
                                   @RequestParam(required = false, defaultValue = "false") Boolean showCover,
                                   Integer category) {
         LambdaQueryWrapper<NewsList> wrapper = Wrappers.lambdaQuery();

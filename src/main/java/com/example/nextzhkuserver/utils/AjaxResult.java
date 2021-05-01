@@ -41,6 +41,12 @@ public class AjaxResult extends HashMap<String, Object> {
         // 401：没有提供认证信息。请求的时候没有带上 Token 等
         UNAUTHORIZED(401),
 
+        // 失效的 token
+        ILLEGAL(50008),
+
+        // token 已过期
+        EXPIRED(50014),
+
         /**
          * 错误
          */
@@ -189,9 +195,72 @@ public class AjaxResult extends HashMap<String, Object> {
     }
 
     /**
+     * 返回未认证消息
+     *
+     * @param message 返回内容
+     * @return 未认证消息
+     */
+    public static AjaxResult unauthorized(String message) {
+        return AjaxResult.unauthorized(message, null);
+    }
+
+    /**
+     * 返回未认证消息
+     *
+     * @param message 返回内容
+     * @param data    数据对象
+     * @return 未认证消息
+     */
+    public static AjaxResult unauthorized(String message, Object data) {
+        return new AjaxResult(Type.UNAUTHORIZED, message, data);
+    }
+
+    /**
+     * 返回 token 失效信息
+     *
+     * @param message 返回内容
+     * @return token 失效信息
+     */
+    public static AjaxResult illegal(String message) {
+        return AjaxResult.illegal(message, null);
+    }
+
+    /**
+     * 返回 token 失效信息
+     *
+     * @param message 返回内容
+     * @param data    数据对象
+     * @return token 失效信息
+     */
+    public static AjaxResult illegal(String message, Object data) {
+        return new AjaxResult(Type.ILLEGAL, message, data);
+    }
+
+    /**
+     * 返回 token 过期消息
+     *
+     * @param message 返回内容
+     * @return token 过期消息
+     */
+    public static AjaxResult expired(String message) {
+        return AjaxResult.expired(message, null);
+    }
+
+    /**
+     * 返回 token 过期消息
+     *
+     * @param message 返回内容
+     * @param data    数据对象
+     * @return token 过期消息
+     */
+    public static AjaxResult expired(String message, Object data) {
+        return new AjaxResult(Type.EXPIRED, message, data);
+    }
+
+    /**
      * 返回错误消息
      *
-     * @return
+     * @return 警告消息
      */
     public static AjaxResult error() {
         return AjaxResult.error("操作失败");
