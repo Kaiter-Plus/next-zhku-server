@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.example.nextzhkuserver.entity.ImageList;
 import com.example.nextzhkuserver.entity.NewsList;
 import com.example.nextzhkuserver.service.NewsListService;
 import com.example.nextzhkuserver.utils.AjaxResult;
@@ -104,6 +103,17 @@ public class NewsListController {
                 return AjaxResult.fail("不支持的请求方法");
 
         }
+    }
+
+    // 获取数量
+    @GetMapping("/news/count")
+    public AjaxResult getNewsCount() {
+        LambdaQueryWrapper<NewsList> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(NewsList::getStatus, 1);
+        HashMap<String, Integer> result = new HashMap<>();
+        result.put("total", newsListService.count());
+        result.put("enabled", newsListService.count(wrapper));
+        return AjaxResult.success("获取数量成功", result);
     }
 
     /*

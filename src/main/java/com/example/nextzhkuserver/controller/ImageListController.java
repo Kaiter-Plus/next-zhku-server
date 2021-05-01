@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -106,6 +105,18 @@ public class ImageListController {
                 return AjaxResult.fail("不支持的请求方法");
 
         }
+    }
+
+    // 获取数量
+    @GetMapping("/image/count")
+    public AjaxResult getImageCount() {
+        LambdaQueryWrapper<ImageList> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(ImageList::getStatus, 1);
+        HashMap<String, Integer> result = new HashMap<>();
+        result.put("total", imageListService.count());
+        result.put("enabled", imageListService.count(wrapper));
+        return AjaxResult.success("获取数量成功", result);
+
     }
 
     /*

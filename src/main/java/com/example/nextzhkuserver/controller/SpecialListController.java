@@ -104,6 +104,17 @@ public class SpecialListController {
         }
     }
 
+    // 获取数量
+    @GetMapping("/special/count")
+    public AjaxResult getSpecialCount() {
+        LambdaQueryWrapper<SpecialList> wrapper = Wrappers.lambdaQuery();
+        wrapper.eq(SpecialList::getStatus, 1);
+        HashMap<String, Integer> result = new HashMap<>();
+        result.put("total", specialListService.count());
+        result.put("enabled", specialListService.count(wrapper));
+        return AjaxResult.success("获取数量成功", result);
+    }
+
     /*
      * 公共接口
      * */
